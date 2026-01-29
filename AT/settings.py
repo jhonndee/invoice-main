@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-2-a2dzy)$_9i^wvq@b6_7o4)b)%(wsq7nwfue9zaur0_q8r1@#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG =     False
 
-ALLOWED_HOSTS = ['/invoice-main-psi.vercel.app']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -122,6 +123,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# URL pour les fichiers statiques
+STATIC_URL = '/static/'
+
+# Dossier où collectstatic copiera tous les fichiers statiques
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Dossier pour tes fichiers statiques en dev
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+
 TAILWIND_APP_NAME = 'theme'
 INTERNAL_IPS = ["127.0.0.1"]
 AUTH_USER_MODEL = 'users.CustomUser'

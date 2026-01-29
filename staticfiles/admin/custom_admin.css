@@ -1,0 +1,55 @@
+/* HEADER */
+#header {
+    background-color: #0f172a; /* bleu foncé */
+}
+
+/* TITRE */
+#branding h1 {
+    color: #38bdf8; /* bleu clair */
+}
+
+/* FOND GLOBAL */
+body {
+    background-color: #f8fafc;
+}
+
+/* TEXTE */
+body, td, th {
+    color: #0f172a;
+}
+/* Bouton principal */
+.button,
+input[type=submit],
+input[type=button] {
+    background-color: #2563eb;
+    border-color: #2563eb;
+    color: white;
+    border-radius: 6px;
+}
+
+/* Hover */
+.button:hover,
+input[type=submit]:hover {
+    background-color: #1e40af;
+}
+/* En-têtes tableau */
+#changelist table thead th {
+    background-color: #e5e7eb;
+    color: #111827;
+}
+
+/* Lignes hover */
+#changelist table tbody tr:hover {
+    background-color: #dbeafe;
+}
+input, select, textarea {
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    padding: 6px;
+}
+
+/* Focus */
+input:focus, select:focus, textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+}
