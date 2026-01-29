@@ -136,7 +136,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Dossier pour tes fichiers statiques en dev
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "cores" / "statics",
 ]
 
 TAILWIND_APP_NAME = 'theme'
