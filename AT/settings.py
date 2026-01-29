@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2-a2dzy)$_9i^wvq@b6_7o4)b)%(wsq7nwfue9zaur0_q8r1@#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['/invoice-main-psi.vercel.app']
 
 
 # Application definition
