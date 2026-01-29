@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.invoice-box {
+    max-width: 900px;
+    margin: auto;
+    padding: 40px;
+    border: 1px solid #eee;
+    font-family: "Helvetica", Arial, sans-serif;
+    color: #333;
+    background: #ffffff;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.company-info h1 {
+    font-size: 28px;
+    color: #2563eb;
+    margin-bottom: 5px;
+}
+
+.invoice-title {
+    text-align: right;
+}
+
+.invoice-title h2 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.section {
+    margin-top: 30px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.table th {
+    background: #2563eb;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+.table td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.total-box {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.total-box h2 {
+    color: #2563eb;
+}
+
+.footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+}
+</style>
+<a href="{% url 'dashboard' %}"
+       class="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition-colors mb-4">
+       ⚙️ Retour au tableau de bord
+</a>
+
+<div class="invoice-box">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="company-info">
+
+            {% if company.logo %}
+                <img src="{{ company.logo.url }}" alt="Logo"
+                     style="max-height:70px;margin-bottom:10px;">
+            {% endif %}
+
+            <h1>{{ company.company_name }}</h1>
+            <p>
+                {{ company.address|linebreaksbr }}<br>
+                {% if company.email %}
+                    Email : {{ company.email }}<br>
+                {% endif %}
+                {% if company.phone %}
+                    Tel : {{ company.phone }}
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="invoice-title">
+            <h2>FACTURE</h2>
+            <p>
+                <strong>N° :</strong> {{ invoice.id }}<br>
+                <strong>Date :</strong> {{ invoice.created_at|date:"d/m/Y" }}<br>
+                <strong>Échéance :</strong> {{ invoice.due_date }}
+            </p>
+        </div>
+    </div>
+
+    <!-- CLIENT -->
+    <div class="section">
+        <h3>Facturé à :</h3>
+        <p>
+            <strong>{{ invoice.client.name }}</strong><br>
+            {{ invoice.client.email }}<br>
+            {{ invoice.client.phone }}<br>
+            {{ invoice.client.address }}
+        </p>
+    </div>
+
+    <!-- TABLE PRODUITS -->
+    <div class="section">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Prix</th>
+                    <th>Quantité</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in invoice.invoiceitem_set.all %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.product.price }} Ar</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>
+                        {{ item.product.price|floatformat:2 }} Ar
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="total-box">
+        <p>Sous-total : <strong>{{ invoice.total }} Ar</strong></p>
+        <p>TVA (0%) : 0 Ar</p>
+        <h2>Total à payer : {{ invoice.total }} Ar</h2>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        Merci pour votre confiance 🙏<br>
+        Facture générée automatiquement par le système
+    </div>
+
+    <div style="text-align:right; margin-top:20px;">
+        <a href="{% url 'invoice_pdf' invoice.id %}"
+           style="background:#2563eb;color:white;padding:10px 20px;
+                  text-decoration:none;border-radius:5px;">
+            Télécharger le PDF
+        </a>
+    </div>
+
+</div>
+
+{% endblock %}

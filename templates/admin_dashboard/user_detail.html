@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-6">
+  <h1 class="text-2xl font-bold mb-4">Utilisateur : {{ user.username }}</h1>
+  <p>Email : {{ user.email }}</p>
+  <p>Plan : {{ user.plan }}</p>
+  <p>Actif : {{ user.is_active }}</p>
+
+  <a href="{% url 'user_list' %}" class="text-blue-500 underline mt-4 inline-block">Retour liste</a>
+</div>
+{% endblock %}

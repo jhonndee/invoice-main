@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="p-6 max-w-5xl mx-auto space-y-8 text-gray-900 dark:text-gray-100">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold">
+                {% if invoice %}Éditer{% else %}Créer{% endif %} une facture
+            </h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Renseignez les informations de la facture
+            </p>
+        </div>
+
+        <a href="{% url 'dashboard' %}"
+           class="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
+            ← Retour au tableau de bord
+        </a>
+    </div>
+
+    <form method="POST" class="space-y-8">
+        {% csrf_token %}
+
+        <!-- Carte : Informations générales -->
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6 space-y-4">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Informations générales
+            </h2>
+
+            <!-- Client -->
+            <div>
+                <label class="block text-sm font-medium mb-1">Client</label>
+                <select name="client"
+                        class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full
+                               bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                    {% for client in clients %}
+                        <option value="{{ client.id }}">{{ client.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Statut -->
+            <div>
+                <label class="block text-sm font-medium mb-1">État de la facture</label>
+                <select name="status"
+                        class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full
+                               bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                    <option value="draft">Brouillon</option>
+                    <option value="sent">Envoyée</option>
+                    <option value="paid">Payée</option>
+                    <option value="cancelled">Annulée</option>
+                </select>
+            </div>
+
+            <!-- Date -->
+            <div>
+                <label class="block text-sm font-medium mb-1">Date d’échéance</label>
+                <input type="date" name="due_date"
+                       class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full
+                              bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+            </div>
+        </div>
+
+        <!-- Carte : Produits -->
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Produits / Services</h2>
+
+                <button type="button" id="add-product-btn"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-600 transition">
+                    + Ajouter un produit
+                </button>
+            </div>
+
+            <div id="products-container" class="space-y-3">
+
+                <!-- Ligne produit -->
+                <div class="grid grid-cols-12 gap-3 items-center product-line">
+                    <input type="text" name="free_product_name[]"
+                           placeholder="Nom du produit"
+                           class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 col-span-6
+                                  bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+
+                    <input type="number" name="free_product_price[]"
+                           placeholder="Prix (Ar)" min="0" step="0.01"
+                           class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 col-span-3
+                                  bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+
+                    <input type="number" name="free_product_quantity[]"
+                           value="1" min="1"
+                           class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 col-span-2
+                                  bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+
+                    <button type="button"
+                            class="remove-btn text-red-600 text-sm hover:underline col-span-1">
+                        Supprimer
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-end gap-3">
+            <a href="{% url 'dashboard' %}"
+               class="px-4 py-2 rounded-lg border text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                Annuler
+            </a>
+
+            <button type="submit"
+                    class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition">
+                Enregistrer la facture
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const container = document.getElementById("products-container");
+    const addBtn = document.getElementById("add-product-btn");
+
+    function attachRemove(btn) {
+        btn.addEventListener("click", () => {
+            btn.closest(".product-line").remove();
+        });
+    }
+
+    addBtn.addEventListener("click", function() {
+        const line = document.createElement("div");
+        line.className = "grid grid-cols-12 gap-3 items-center product-line";
+        line.innerHTML = `
+            <input type="text" name="free_product_name[]"
+                   placeholder="Nom du produit"
+                   class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 col-span-6
+                          bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+
+            <input type="number" name="free_product_price[]"
+                   placeholder="Prix (Ar)" min="0" step="0.01"
+                   class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 col-span-3
+                          bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+
+            <input type="number" name="free_product_quantity[]"
+                   value="1" min="1"
+                   class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 col-span-2
+                          bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+
+            <button type="button"
+                    class="remove-btn text-red-600 text-sm hover:underline col-span-1">
+                Supprimer
+            </button>
+        `;
+        container.appendChild(line);
+        attachRemove(line.querySelector(".remove-btn"));
+    });
+
+    document.querySelectorAll(".remove-btn").forEach(attachRemove);
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-md mx-auto p-6 rounded shadow mt-10 bg-white dark:bg-gray-800">
+    <h1 class="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+        Créer un compte
+    </h1>
+
+    <!-- Messages succès / erreurs -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="mb-4 px-4 py-2 rounded 
+                {% if message.tags == 'success' %}
+                    bg-green-100 text-green-800
+                {% elif message.tags == 'error' %}
+                    bg-red-100 text-red-800
+                {% else %}
+                    bg-gray-100 text-gray-800
+                {% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST" class="space-y-4">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="text-red-600 text-sm mb-2">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <!-- Username -->
+        <div>
+            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                Nom d’utilisateur
+            </label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="text-red-600 text-sm mt-1">
+                    {% for error in form.username.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Email -->
+        <div>
+            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                Email
+            </label>
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="text-red-600 text-sm mt-1">
+                    {% for error in form.email.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Nom de l'entreprise -->
+        <div>
+            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                Nom de l’entreprise
+            </label>
+            {{ form.company_name }}
+            {% if form.company_name.errors %}
+                <div class="text-red-600 text-sm mt-1">
+                    {% for error in form.company_name.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Statut -->
+        <div>
+            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                Statut
+            </label>
+            {{ form.statut }}
+            {% if form.statut.errors %}
+                <div class="text-red-600 text-sm mt-1">
+                    {% for error in form.statut.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Téléphone -->
+        <div>
+            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                Numéro de téléphone
+            </label>
+            {{ form.phone }}
+            {% if form.phone.errors %}
+                <div class="text-red-600 text-sm mt-1">
+                    {% for error in form.phone.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Mot de passe -->
+        <div>
+            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                Mot de passe
+            </label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+                <div class="text-red-600 text-sm mt-1">
+                    {% for error in form.password1.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Confirmation mot de passe -->
+        <div>
+            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                Confirmer le mot de passe
+            </label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+                <div class="text-red-600 text-sm mt-1">
+                    {% for error in form.password2.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Champ caché is_client -->
+        {{ form.is_client }}
+
+        <button
+            type="submit"
+            class="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600 transition-colors font-semibold"
+        >
+            S’inscrire
+        </button>
+    </form>
+</div>
+{% endblock %}

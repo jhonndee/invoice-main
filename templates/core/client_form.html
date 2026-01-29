@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="p-6 max-w-4xl mx-auto space-y-8 text-gray-900 dark:text-gray-100">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl font-bold">
+                {% if client %}Éditer{% else %}Ajouter{% endif %} un client
+            </h1>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                Informations du client
+            </p>
+        </div>
+
+        <a href="{% url 'dashboard' %}"
+           class="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition">
+            ← Retour au tableau de bord
+        </a>
+    </div>
+
+    <form method="POST" class="space-y-8">
+        {% csrf_token %}
+
+        <!-- Carte : Informations principales -->
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6 space-y-4">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                Informations principales
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Nom</label>
+                    <input type="text" name="name"
+                           class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full
+                                  bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                           value="{{ client.name|default:'' }}">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Email</label>
+                    <input type="email" name="email"
+                           class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full
+                                  bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                           value="{{ client.email|default:'' }}">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Téléphone</label>
+                    <input type="text" name="phone"
+                           class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full
+                                  bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                           value="{{ client.phone|default:'' }}">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-1">Sexe</label>
+                    <select name="sex"
+                            class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full
+                                   bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                        <option value="">Sélectionner</option>
+                        <option value="M" {% if client.sex == 'M' %}selected{% endif %}>Masculin</option>
+                        <option value="F" {% if client.sex == 'F' %}selected{% endif %}>Féminin</option>
+                        <option value="O" {% if client.sex == 'O' %}selected{% endif %}>Autre</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Carte : Localisation -->
+        <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm p-6 space-y-4">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Localisation</h2>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Adresse</label>
+                    <textarea name="address" rows="3"
+                              class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full
+                                     bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">{{ client.address|default:'' }}</textarea>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Province</label>
+                        <select name="province"
+                                class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full
+                                       bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                            <option value="">Sélectionner</option>
+                            <option value="province1" {% if client.province == 'province1' %}selected{% endif %}>Antananarivo</option>
+                            <option value="province2" {% if client.province == 'province2' %}selected{% endif %}>Antsiranana</option>
+                            <option value="province3" {% if client.province == 'province3' %}selected{% endif %}>Toamasina</option>
+                            <option value="province4" {% if client.province == 'province4' %}selected{% endif %}>Mahajanga</option>
+                            <option value="province5" {% if client.province == 'province5' %}selected{% endif %}>Fianarantsoa</option>
+                            <option value="province6" {% if client.province == 'province6' %}selected{% endif %}>Toliara</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Tranche d’âge</label>
+                        <select name="age_range"
+                                class="border border-gray-300 dark:border-gray-600 rounded-lg p-2 w-full
+                                       bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
+                            <option value="">Sélectionner</option>
+                            <option value="moins_18" {% if client.age_range == "Moins de 18 ans" %}selected{% endif %}>Moins de 18 ans</option>
+                            <option value="18_25" {% if client.age_range == "18-25 ans" %}selected{% endif %}>18-25 ans</option>
+                            <option value="26_35" {% if client.age_range == "26-35 ans" %}selected{% endif %}>26-35 ans</option>
+                            <option value="36_50" {% if client.age_range == "36-50 ans" %}selected{% endif %}>36-50 ans</option>
+                            <option value="plus_50" {% if client.age_range == "Plus de 50 ans" %}selected{% endif %}>Plus de 50 ans</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex justify-end gap-3">
+            <a href="{% url 'dashboard' %}"
+               class="px-4 py-2 rounded-lg border text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                Annuler
+            </a>
+
+            <button type="submit"
+                    class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">
+                Enregistrer
+            </button>
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

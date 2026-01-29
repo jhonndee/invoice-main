@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="space-y-6 p-6">
+
+    <!-- Header + Actions -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">Clients</h1>
+
+        <div class="flex gap-2">
+            <a href="{% url 'client_create' %}"
+               class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                + Ajouter un client
+            </a>
+
+            <a href="{% url 'dashboard' %}"
+               class="bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-4 py-2 rounded-lg hover:opacity-90 transition">
+                Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Barre de recherche -->
+    <div class="mb-4">
+        <input type="text" id="clientSearch" placeholder="Rechercher par nom, email ou téléphone"
+               class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2
+                      bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
+                      focus:outline-none focus:ring-2 focus:ring-blue-500"
+               onkeyup="filterClients()">
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden">
+        <table id="clientsTable" class="w-full text-sm text-gray-900 dark:text-gray-100">
+            <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-200">
+                <tr>
+                    <th class="px-4 py-3 text-left">Nom</th>
+                    <th class="px-4 py-3 text-left">Email</th>
+                    <th class="px-4 py-3 text-left">Téléphone</th>
+                    <th class="px-4 py-3 text-right">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="clientsTbody" class="divide-y divide-gray-200 dark:divide-gray-700">
+                {% for client in clients %}
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                    <td class="px-4 py-3 font-medium">{{ client.name }}</td>
+                    <td class="px-4 py-3 text-gray-600 dark:text-gray-300">{{ client.email }}</td>
+                    <td class="px-4 py-3">{{ client.phone }}</td>
+                    <td class="px-4 py-3 text-right space-x-3">
+                        <a href="{% url 'client_edit' client.pk %}" class="text-blue-600 hover:underline">Éditer</a>
+                        <a href="{% url 'client_delete' client.pk %}" class="text-red-600 hover:underline">Supprimer</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="px-4 py-6 text-center text-gray-500 dark:text-gray-400">Aucun client enregistré</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flex justify-center mt-4 space-x-2" id="pagination"></div>
+
+</div>
+
+<!-- JS Recherche + Pagination -->
+<script>
+const rowsPerPage = 20;
+let currentPage = 1;
+
+const tbody = document.getElementById("clientsTbody");
+const rows = Array.from(tbody.querySelectorAll("tr")).filter(r => !r.classList.contains("empty-row"));
+
+// --- Fonction de filtrage ---
+function filterClients() {
+    const filter = document.getElementById("clientSearch").value.toLowerCase();
+    rows.forEach(row => {
+        const name = row.cells[0].textContent.toLowerCase();
+        const email = row.cells[1].textContent.toLowerCase();
+        const phone = row.cells[2].textContent.toLowerCase();
+        row.style.display = (name.includes(filter) || email.includes(filter) || phone.includes(filter)) ? "" : "none";
+    });
+    currentPage = 1;
+    paginate();
+}
+
+// --- Pagination ---
+function paginate() {
+    const filteredRows = rows.filter(r => r.style.display !== "none");
+    const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    filteredRows.forEach((row, index) => {
+        row.style.display = (index >= start && index < end) ? "" : "none";
+    });
+
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+    for(let i=1; i<=totalPages; i++){
+        const btn = document.createElement("button");
+        btn.textContent = i;
+        btn.className = `px-3 py-1 rounded ${i===currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'}`;
+        btn.addEventListener("click", () => { currentPage=i; paginate(); });
+        pagination.appendChild(btn);
+    }
+}
+
+// Initialisation
+paginate();
+</script>
+
+{% endblock %}

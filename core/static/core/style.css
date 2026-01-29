@@ -1,0 +1,183 @@
+/* =========================
+   VARIABLES – THÈMES
+   ========================= */
+:root {
+  /* Mode clair */
+  --bg: #f9fafb;
+  --card-bg: #ffffff;
+  --text: #111827;
+  --link: #1d4ed8;
+  --border: #d1d5db;
+  --input-bg: #ffffff;
+  --input-text: #111827;
+  --placeholder: #6b7280;
+
+  /* Accents */
+  --accent: #00ffff;
+  --accent2: #8a2be2;
+
+  --button-text: #0b0c2c;
+}
+
+/* Mode sombre type Facebook */
+body.dark-mode {
+  --bg: #000000;             /* Fond gris très foncé */
+  --card-bg: #242526;        /* Cartes légèrement plus claires */
+  --text: #e4e6eb;           /* Texte clair */
+  --link: #2d88ff;           /* Liens bleus doux */
+  --border: #3a3b3c;         /* Bordures discrètes */
+
+  --input-bg: #3a3b3c;       /* Inputs un peu plus clairs que cartes */
+  --input-text: #e4e6eb;
+  --placeholder: #b0b3b8;
+
+  --button-text: #18191a;
+}
+
+/* =========================
+   BASE GLOBALE
+   ========================= */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', 'Poppins', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+  color: var(--link);
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   CARTES / SECTIONS
+   ========================= */
+.card,
+.bg-white,
+.bg-gray-50,
+.bg-gray-100 {
+  background-color: var(--card-bg) !important;
+  color: var(--text) !important;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* =========================
+   TABLEAUX
+   ========================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid var(--border);
+  padding: 0.75rem;
+  text-align: left;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+thead {
+  background-color: #3a3b3c;
+  color: var(--text);
+}
+
+tbody tr:hover {
+  background-color: rgba(255,255,255,0.05);
+}
+
+/* =========================
+   FORMULAIRES
+   ========================= */
+input,
+select,
+textarea {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  -webkit-text-fill-color: var(--input-text);
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, color 0.3s ease;
+  width: 100%;
+  font-size: 0.95rem;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--placeholder);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(45,136,255,0.15);
+}
+
+/* =========================
+   BOUTONS
+   ========================= */
+button {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: var(--button-text);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
+/* =========================
+   FORCE COULEUR TEXTE DANS FORMULAIRES
+   ========================= */
+input,
+textarea,
+select {
+  color: var(--input-text) !important;
+  -webkit-text-fill-color: var(--input-text) !important;
+  caret-color: var(--input-text) !important;
+}
+
+/* =========================
+   MODE NUIT SPÉCIFIQUE
+   ========================= */
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+  background-color: var(--input-bg) !important;
+  color: var(--input-text) !important;
+  -webkit-text-fill-color: var(--input-text) !important;
+  caret-color: var(--input-text) !important;
+  border: 1px solid #555 !important;
+}
+
+body.dark-mode,
+body.dark-mode main,
+body.dark-mode section,
+body.dark-mode article,
+body.dark-mode .container,
+body.dark-mode .wrapper,
+body.dark-mode .content,
+body.dark-mode .page,
+body.dark-mode .card,
+body.dark-mode .bg-white,
+body.dark-mode .bg-gray-50,
+body.dark-mode .bg-gray-100 {
+  background-color: var(--card-bg) !important;
+  color: var(--text) !important;
+}
+

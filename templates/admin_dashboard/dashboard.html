@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="p-6">
+  <h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
+
+  <div class="grid grid-cols-2 gap-6">
+    <div class="bg-white shadow p-4 rounded">
+      <h2 class="text-xl">Total utilisateurs</h2>
+      <p class="text-4xl font-bold">{{ total_users }}</p>
+    </div>
+
+    <div class="bg-white shadow p-4 rounded">
+      <h2 class="text-xl">Utilisateurs actifs</h2>
+      <p class="text-4xl font-bold text-green-600">{{ active_users }}</p>
+    </div>
+  </div>
+
+  <a href="{% url 'user_list' %}" class="mt-6 inline-block text-blue-500">Voir tous les utilisateurs</a>
+</div>
+{% endblock %}
